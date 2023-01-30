@@ -1,0 +1,57 @@
+#PARAMETROS entrenamiento.py y test.py
+
+base_dir: 'C:\\Users\\ARVC\\Desktop\\Datasets\\Friburgo'
+
+rutas_imgs:
+  training_dir: 'Entrenamiento_Completo'
+  validation_dir: 'Validacion_Completa'
+  centro_geom_dir: 'ImgsCentroGeometricoDatasetCompleto'
+  test_cloudy_dir: '\\TestCloudy'
+  test_sunny_dir: '\\TestSunny'
+  test_night_dir: '\\TestNight'
+
+rutas_csv:
+  train_csv_dir: '\\ListaEntrenamiento_Completa.csv'
+  val_csv_dir: '\\ListaValidacion_Completa.csv'
+  data_csv_dir: '\\DatosExperimento8.csv'
+  test_csv_dir: '\\ResultadosExperimento8.csv'
+  test:
+    cloudy_csv_dir: '\\TestNublado.csv'
+    sunny_csv_dir: '\\TestSoleado.csv'
+    night_csv_dir: '\\TestNoche.csv'
+
+batch_size:               #tamaño de los lotes de imgs cargados en cada proceso (número de combinaciones de imgs)
+  train_batch_size: 16
+  val_batch_size: 9
+  test_batch_size: 9
+
+train_number_epochs: 5   #número de épocas a realizar para el entrenamiento de la red
+
+do_dataparallel: True
+
+shuffle_data:              #si shuffle==True, carga los lotes de forma aleatoria,  si shuffle=False, carga los lotes en orden
+  shuffle_train: False
+  shuffle_val: False
+  shuffle_test: False
+
+num_workers:               #en el PC habitual da error si vale 16 -> hay que poner 0
+  workers_train: 0
+  workers_val: 0
+  workers_test: 0
+
+frequency:                #estos parámetros indican cada cuántos lotes de imgs cargados
+  show_loss: 5            #se muestra el valor de la función de pérdida
+  do_validation: 5        #se realiza la validación de la red
+
+names:
+  train_net: 'net_exp8'   #este parámetro indica el nombre con el que queremos que se guarde la red
+  test_net: '' #este parámetro indica el nombre de la red cargada en el test
+
+probabilities:
+  hard_pos: 0.15   #este parámetro indica la proporción de imágenes hard positive respecto del total de imágenes positive pasadas a la red durante el entrenamiento
+  hard_neg: 0.15   #este parámetro indica la proporción de imágenes hard negative respecto del total de imágenes negative pasadas a la red durante el entrenamiento
+
+num_iteraciones: 1000
+
+min_val_accuracy: 98
+
