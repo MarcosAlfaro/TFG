@@ -6,18 +6,19 @@
 import os
 import torchvision.datasets as dset
 import csv
+from config import PARAMETERS
 
 
+# Esta función nos devuelve la ruta del directorio en el que estamos trabajando
+base_dir = PARAMETERS.base_dir
 
-#Esta función nos devuelve la ruta del directorio en el que estamos trabajando
-base_dir=os.getcwd()
-
-#Creamos una clase en la que definimos las rutas de los directorios de los cuales extraemos las imágenes
+# Creamos una clase en la que definimos las rutas de los directorios de los cuales extraemos las imágenes
 class Config():
-   test_dir= os.path.join(base_dir,'TestSunny')
+   test_dir = os.path.join(base_dir, 'TestCloudy')
    comp_dir = os.path.join(base_dir, 'ImagenesCentroGeometrico')
 
-#Creamos un vector en el que cada elemento representa una habitación del edificio
+
+# Creamos un vector en el que cada elemento representa una habitación del edificio
 folder_dataset_test = dset.ImageFolder(root=Config.test_dir)
 rooms_test = folder_dataset_test.classes
 folder_dataset_comp = dset.ImageFolder(root=Config.comp_dir)
@@ -27,10 +28,10 @@ index = -1
 
 
 #Generamos el archivo .csv en modo escritura
-with open( base_dir + '\\TestSoleado.csv', 'w', newline='') as file:
+with open(base_dir + '/TestNublado.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(
-        ["ImgTest","ImgComp","Indice"])
+        ["ImgTest", "ImgComp", "Indice"])
 
 
     for habitacion_test in rooms_test:

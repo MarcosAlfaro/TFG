@@ -1,12 +1,12 @@
 # Commented out IPython magic to ensure Python compatibility.
 
-#importamos los módulos y librerías necesarios
-#torch: realizar cálculos numéricos haciendo uso de la programación de tensores
-#numpy: operaciones numéricas
-#matplotlib: representar gráficas
-#torchvision: datasets, transformación de imágenes en visión por computador
-#PIL: procesamiento de imágenes
-#os:sirve para trabajar con archivos,carpetas y rutas
+# importamos los módulos y librerías necesarios
+# torch: realizar cálculos numéricos haciendo uso de la programación de tensores
+# numpy: operaciones numéricas
+# matplotlib: representar gráficas
+# torchvision: datasets, transformación de imágenes en visión por computador
+# PIL: procesamiento de imágenes
+# os:sirve para trabajar con archivos,carpetas y rutas
 
 import torch
 from torch import optim
@@ -23,11 +23,11 @@ import os
 import time
 import csv
 
-#importamos los parámetros del programa definidos en el archivo .yaml
+# importamos los parámetros del programa definidos en el archivo .yaml
 from config import PARAMETERS
 
 
-#indica que si el computador dispone de cuda, trabajaremos con cuda, si no, se hará en la cpu
+# indica que si el computador dispone de cuda, trabajaremos con cuda, si no, se hará en la cpu
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Using device:', device)
 
@@ -40,10 +40,9 @@ def imshow(img,text=None,should_save=False):
             bbox={'facecolor':'white', 'alpha':0.8, 'pad':10})
     plt.imshow(np.transpose(npimg, (1, 2, 0)))
     plt.show()
-
-#definimos esta función que nos permite mostrar la gráfica de la función de pérdida
+# definimos esta función que nos permite mostrar la gráfica de la función de pérdida
 def show_plot(iteration,loss):
-    plt.plot(iteration,loss)
+    plt.plot(iteration, loss)
     plt.show()
 
 #definimos estas dos funciones que nos permiten mostrar por pantalla el tiempo dedicado por el programa al entrenamiento y a la validación de la red
@@ -378,8 +377,8 @@ with open( base_dir + PARAMETERS.data_csv_dir, 'w', newline='') as file:
 
                 print("Precision= ",accuracy," %")
 
-                if accuracy >= max_accuracy and accuracy>95:
-                    max_accuracy=accuracy
+                if accuracy >= max_accuracy and accuracy>=100:
+                    max_accuracy = accuracy
                     mean_accuracy+=accuracy
                     #Si la precisión de la validación es mayor que la máxima hasta el momento,guardamos la red y mostramos por pantalla la gráfica de la función de pérdida
 
@@ -392,12 +391,7 @@ with open( base_dir + PARAMETERS.data_csv_dir, 'w', newline='') as file:
                     print("Acierto de validación máximo: ", max_accuracy, "%")
                     mostrar_tiempo_train(sum_time_train)
                     mostrar_tiempo_val(sum_time_val)
-                    writer.writerow([epoch,i+1,((i+1)*PARAMETERS.train_batch_size)+epoch*len(anc),max_accuracy,sum_time_train,sum_time_val])
+                    writer.writerow([epoch,i+1,((i+1)*PARAMETERS.train_batch_size)+epoch*len(anc), max_accuracy, sum_time_train, sum_time_val])
 
-
-
-
-
-
-        print("Epoca ",epoch," finalizada")
+        print("Epoca ", epoch, " finalizada")
     show_plot(counter, loss_history)

@@ -17,9 +17,10 @@ import csv
 from config import PARAMETERS
 import pickle
 
-#indica que si el computador dispone de cuda, trabajaremos con cuda, si no, se hará en la cpu
+# indica que si el computador dispone de cuda, trabajaremos con cuda, si no, se hará en la cpu
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Using device:', device)
+
 
 def imshow(img, text=None, should_save=False):
     npimg = img.numpy()
@@ -35,8 +36,9 @@ def show_plot(iteration, loss):
     plt.plot(iteration, loss)
     plt.show()
 
-#esta función genera una matriz de confusión entre las habitaciones del edificio
-def display_confusion_matrix(cm, illumination,plt_name, net, gd):
+
+# esta función genera una matriz de confusión entre las habitaciones del edificio
+def display_confusion_matrix(cm, illumination, plt_name, net, gd):
 
     # os.makedirs(EXPCONFIG.base_dir + 'Run0_' + str(video_number) + '/smsd_results', exist_ok=True)
     plt.figure(figsize=(9, 5), dpi=120)
@@ -58,11 +60,11 @@ def display_confusion_matrix(cm, illumination,plt_name, net, gd):
 
     # plt.clf()
 
-#Obtenemos la ruta del directorio en el que estamos trabajando
-base_dir= os.getcwd()
 
+# Obtenemos la ruta del directorio en el que estamos trabajando
+base_dir = PARAMETERS.base_dir
 
-#en esta clase definimos parámetros que utilizaremos durante el programa
+# en esta clase definimos parámetros que utilizaremos durante el programa
 # class Config():
 #     # ground_dir = os.path.join(base_dir,'GroundTruthDataset')
 #     test_cloudy_dir = PARAMETERS.test_cloudy_dir
@@ -72,9 +74,9 @@ base_dir= os.getcwd()
 #     # train_number_epochs = 5
 
 
-#en esta clase obtenemos las combinaciones de imágenes de test en condiciones nubladas con las imágenes representativas de cada habitación
-#guardadas en el archivo 'TestNublado.csv' generado en el programa generacionimagenes_test.py
-#y las transformamos a formato RGB
+# en esta clase obtenemos las combinaciones de imágenes de test en condiciones nubladas con las imágenes representativas de cada habitación
+# guardadas en el archivo 'TestNublado.csv' generado en el programa generacionimagenes_test.py
+# y las transformamos a formato RGB
 class GeneracionDatasetCloudy(Dataset):
 
     def __init__(self, imageFolderDataset, transform=None, should_invert=True):
@@ -90,8 +92,6 @@ class GeneracionDatasetCloudy(Dataset):
         self.indice = fichero_test['Indice']
 
     def __getitem__(self, index):
-
-
 
         img0 = self.list_img_test[index]
         img1 = self.list_img_comp[index]
@@ -111,16 +111,15 @@ class GeneracionDatasetCloudy(Dataset):
             img_test = self.transform(img_test)
             img_comp = self.transform(img_comp)
 
-
         return img_test, img_comp, indice
 
     def __len__(self):
         return len(self.list_img_test)
 
 
-#en esta clase obtenemos las combinaciones de imágenes de test en condiciones soleadas con las imágenes representativas de cada habitación
-#guardadas en el archivo 'TestSoleado.csv' generado en el programa generacionimagenes_test.py
-#y las transformamos a formato RGB
+# en esta clase obtenemos las combinaciones de imágenes de test en condiciones soleadas con las imágenes representativas de cada habitación
+# guardadas en el archivo 'TestSoleado.csv' generado en el programa generacionimagenes_test.py
+# y las transformamos a formato RGB
 class GeneracionDatasetSunny(Dataset):
 
     def __init__(self, imageFolderDataset, transform=None, should_invert=True):
@@ -137,10 +136,8 @@ class GeneracionDatasetSunny(Dataset):
 
     def __getitem__(self, index):
 
-
-
         img0 = self.list_img_test[index]
-        img1= self.list_img_comp[index]
+        img1 = self.list_img_comp[index]
         indice = self.indice[index]
 
         img_test = Image.open(img0)
@@ -163,9 +160,9 @@ class GeneracionDatasetSunny(Dataset):
         return len(self.list_img_test)
 
 
-#en esta clase obtenemos las combinaciones de imágenes de test en condiciones de noche con las imágenes representativas de cada habitación
-#guardadas en el archivo 'TestNoche.csv' generado en el programa generacionimagenes_test.py
-#y las transformamos a formato RGB
+# obtenemos las combinaciones de imgs de test en condiciones de noche con las imgs representativas de cada habitación
+# guardadas en el archivo 'TestNoche.csv' generado en el programa generacionimagenes_test.py
+# y las transformamos a formato RGB
 class GeneracionDatasetNight(Dataset):
 
     def __init__(self, imageFolderDataset, transform=None, should_invert=True):
@@ -180,8 +177,6 @@ class GeneracionDatasetNight(Dataset):
         self.indice = fichero_test['Indice']
 
     def __getitem__(self, index):
-
-
 
         img0 = self.list_img_test[index]
         img1 = self.list_img_comp[index]
@@ -207,21 +202,21 @@ class GeneracionDatasetNight(Dataset):
         return len(self.list_img_test)
 
 
-#Se carga la red 'vgg16' en la cpu
+# Se carga la red 'vgg16' en la cpu
 vgg16 = torch.hub.load('pytorch/vision:v0.6.0', 'vgg16', pretrained=True)
 
 
-#En esta clase se define la estructura de la red neuronal, cómo están conectadas las capas entre sí,
-#cómo se transmite la información de los inputs a los outputs,etc.
+# En esta clase se define la estructura de la red neuronal, cómo están conectadas las capas entre sí,
+# cómo se transmite la información de los inputs a los outputs,etc.
 class TripletNetwork(nn.Module):
 
     def __init__(self):
         super(TripletNetwork, self).__init__()
         self.cnn1 = vgg16.features
-        if PARAMETERS.do_dataparallel == True:
+        if PARAMETERS.do_dataparallel:
             self.cnn1 = nn.DataParallel(self.cnn1)
         self.avgpool = nn.AdaptiveAvgPool2d((4, 16))
-        if PARAMETERS.do_dataparallel==True:
+        if PARAMETERS.do_dataparallel:
             self.avgpool = nn.DataParallel(self.avgpool)
         self.fc1 = nn.Sequential(
           nn.Linear(4*16*512, 500),
@@ -231,7 +226,7 @@ class TripletNetwork(nn.Module):
           nn.ReLU(inplace=True),
 
           nn.Linear(500, 5))
-        if PARAMETERS.do_dataparallel == True:
+        if PARAMETERS.do_dataparallel:
             self.fc1 = nn.DataParallel(self.fc1)
 
     def forward_once(self, x):
@@ -252,15 +247,15 @@ class TripletNetwork(nn.Module):
         output = self.fc1(output)
         return output
 
-    #NOTA: esta función de la clase es muy importante porque indica cómo hemos planteado el problema:
-    #En lugar de crear tres redes neuronales en la definición de la red, se creará una única red simple
-    #y se llamará a la red varias veces, según el proceso que se desee realizar
-    #Para el entrenamiento, se llamará a la red tres veces, y para la validación se hará en dos ocasiones
+    # En lugar de crear tres redes neuronales en la definición de la red, se creará una única red simple
+    # y se llamará a la red varias veces, según el proceso que se desee realizar
+    # Para el entrenamiento, se llamará a la red tres veces, y para la validación se hará en dos ocasiones
     def forward(self, input1):
         output1 = self.forward_once(input1)
         return output1
 
-#Llamamos a la red
+
+# Llamamos a la red
 net = torch.load(PARAMETERS.test_net).to(device)  # Carga el modelo
 
 print(net)
@@ -277,69 +272,66 @@ print("La longitud de la carpeta test para night: ", folder_dataset_test_night)
 # print("La longitud de la carpeta ground truth: ", folder_GroundTruth)
 
 
-with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
+with open(base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(
-        ["Cloudy","Night","Sunny" ])
+        ["Cloudy", "Night", "Sunny"])
 
     print('TESTEO PARA NUBLADO')
 
-    #Llamamos a la clase GeneracionDatasetCloudy para generar un dataset con las imágenes destinadas al testeo de la red
-    #en condiciones de nublado
+# Llamamos a la clase GeneracionDatasetCloudy para generar un dataset con las imágenes destinadas al testeo de la red
+    # en condiciones de nublado
     test_dataset_cloudy = GeneracionDatasetCloudy(imageFolderDataset=folder_dataset_test_cloudy,
-                                             transform=transforms.Compose([transforms.Resize((128, 512)),
-                                                                           transforms.ToTensor()
-                                                                           ])
-                                             , should_invert=False)
+                                                  transform=transforms.Compose([transforms.Resize((128, 512)),
+                                                                                transforms.ToTensor()
+                                                                                ]),
+                                                  should_invert=False)
 
-    #Cargamos los lotes de imágenes a la cpu
-    test_dataloader_cloudy = DataLoader(test_dataset_cloudy, num_workers=PARAMETERS.workers_test, batch_size=PARAMETERS.test_batch_size, shuffle=PARAMETERS.shuffle_test)
+    # Cargamos los lotes de imágenes a la cpu
+    test_dataloader_cloudy = DataLoader(test_dataset_cloudy, num_workers=PARAMETERS.workers_test,
+                                        batch_size=PARAMETERS.test_batch_size, shuffle=PARAMETERS.shuffle_test)
 
-    cont=0
-    cont_correct=0
-    hab_real =[]
-    hab_pred =[]
+    cont = 0
+    cont_correct = 0
+    hab_real = []
+    hab_pred = []
 
     time_idx = 0
     sum_time = 0
 
     for i, data_cloudy in enumerate(test_dataloader_cloudy, 0):
+        time_idx += 1
+        start = time.time()
 
-         time_idx += 1
-         start = time.time()
+        # Asignamos las imágenes cargadas en cada lote a variables con las que trabajaremos
+        img_test, img_comp, indice = data_cloudy
+        img_test, img_comp, indice = img_test.to(device), img_comp.to(device), indice.to(device)
 
-          # Asignamos las imágenes cargadas en cada lote a variables con las que trabajaremos
-         img_test, img_comp, indice = data_cloudy
-         img_test, img_comp, indice = img_test.to(device), img_comp.to(device), indice.to(device)
+        # Llamamos a la red dos veces,una para cada imagen (imagen de test, imagen representativa)
+        output1 = net(img_test)
+        output2 = net(img_comp)
 
+        # Calculamos la distancia euclídea de los 9 pares de imágenes y la distancia menor nos da la habitación predicha
+        euclidean_distance = F.pairwise_distance(output1, output2)
+        room_predicted = torch.argmin(euclidean_distance)
 
+        end = time.time()
+        time_execution = (end - start)
 
-          # Llamamos a la red dos veces,una para cada imagen (imagen de test, imagen representativa)
-         output1 = net(img_test)
-         output2 = net(img_comp)
+        # confidence = min(euclidean_distance)
+        hab_real.append(indice[0].cpu().numpy())
+        hab_pred.append(room_predicted.cpu().numpy())
 
-          #Calculamos la distancia euclídea de los 9 pares de imágenes y la distancia menor nos da la habitación predicha
-         euclidean_distance = F.pairwise_distance(output1, output2)
-         room_predicted = torch.argmin(euclidean_distance)
+        # Si la habitación real coincide con la habitación predicha, se considera un acierto de la red
+        if room_predicted == indice[0]:
+            cont_correct = cont_correct + 1
+        # else:
+        # print('Habitación predicha: ' + str(room_predicted) + ', habitación real: ' + str(room_test[0]))
+            # print(euclidean_distance)
+        cont = cont + 1
 
-         end = time.time()
-         time_execution = (end - start)
-
-         # confidence = min(euclidean_distance)
-         hab_real.append(indice[0].cpu().numpy())
-         hab_pred.append(room_predicted.cpu().numpy())
-
-         # Si la habitación real coincide con la habitación predicha, se considera un acierto de la red
-         if room_predicted == indice[0]:
-             cont_correct = cont_correct + 1
-        #else:
-              #print('Habitación predicha: ' + str(room_predicted) + ', habitación real: ' + str(room_test[0]))
-              #print(euclidean_distance)
-         cont = cont + 1
-
-         if time_idx > 1:
-             sum_time = time_execution + sum_time
-
+        if time_idx > 1:
+            sum_time = time_execution + sum_time
 
     cm = confusion_matrix(hab_real, hab_pred)
     with open("matriz_confusion_cloudy_exp6c", "wb") as fp:
@@ -348,27 +340,27 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
     cm = pickle.load(file)
     print("MATRIZ DE CONFUSIÓN TEST NUBLADO")
     print(cm)
-    display_confusion_matrix(cm=cm, illumination='cloudy',plt_name='matriz_confusion_cloudy_exp6c.png', net=PARAMETERS.test_net, gd='gd_silhouette_net0')
-    accuracy_cloudy=(cont_correct/cont)*100
-    print('La precisión para nublado es: ',accuracy_cloudy)
-    min_time=sum_time//60
-    sec_time=sum_time%60
-    print("Tiempo de ejecución para test de nublado: ", min_time,"min ", sec_time, "s")
-
+    display_confusion_matrix(cm=cm, illumination='cloudy', plt_name='matriz_confusion_cloudy_exp6c.png', net=PARAMETERS.test_net, gd='gd_silhouette_net0')
+    accuracy_cloudy = (cont_correct/cont)*100
+    print('La precisión para nublado es: ', accuracy_cloudy)
+    min_time = sum_time//60
+    sec_time = sum_time % 60
+    print("Tiempo de ejecución para test de nublado: ", min_time, "min ", sec_time, "s")
 
     # Testeo para night
 
     print('TESTEO PARA NOCHE')
-    #Llamamos a la clase GeneracionDatasetNight para generar un dataset con las imágenes destinadas al testeo de la red
-    #en condiciones de noche
+    # Llamamos a la clase GeneracionDatasetNight para generar un dataset con las imágenes destinadas al testeo de la red
+    # en condiciones de noche
     test_dataset_night = GeneracionDatasetNight(imageFolderDataset=folder_dataset_test_night,
-                                            transform=transforms.Compose([transforms.Resize((128, 512)),
-                                                                          transforms.ToTensor()
-                                                                          ])
-                                            , should_invert=False)
+                                                transform=transforms.Compose([transforms.Resize((128, 512)),
+                                                                              transforms.ToTensor()
+                                                                              ]),
+                                                should_invert=False)
 
-    #Cargamos los lotes de imágenes a la cpu
-    test_dataloader_night = DataLoader(test_dataset_night, num_workers=PARAMETERS.workers_test, batch_size=PARAMETERS.test_batch_size, shuffle=PARAMETERS.shuffle_test)
+    # Cargamos los lotes de imágenes a la cpu
+    test_dataloader_night = DataLoader(test_dataset_night, num_workers=PARAMETERS.workers_test,
+                                       batch_size=PARAMETERS.test_batch_size, shuffle=PARAMETERS.shuffle_test)
 
     cont = 0
     cont_correct = 0
@@ -385,8 +377,6 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
         img_test, img_comp, indice = data_night
         img_test, img_comp, indice = img_test.to(device), img_comp.to(device), indice.to(device)
 
-
-
         # Llamamos a la red dos veces,una para cada imagen (imagen de test, imagen representativa)
         output1 = net(img_test)
         output2 = net(img_comp)
@@ -397,7 +387,6 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
 
         end = time.time()
         time_execution = (end - start)
-
 
         hab_real.append(indice[0].cpu().numpy())
         hab_pred.append(room_predicted.cpu().numpy())
@@ -423,7 +412,6 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
         if time_idx > 1:
             sum_time = time_execution + sum_time
 
-
     cm = confusion_matrix(hab_real, hab_pred)
     with open("matriz_confusion_night_exp6c", "wb") as fp:
         pickle.dump(cm, fp)
@@ -431,28 +419,27 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
     matriz_night = pickle.load(file)
     print("MATRIZ DE CONFUSIÓN TEST NOCHE")
     print(matriz_night)
-    display_confusion_matrix(cm=cm, illumination='night',plt_name='matriz_confusion_night_exp6c.png', net=PARAMETERS.test_net, gd='gd_silhouette_net0')
+    display_confusion_matrix(cm=cm, illumination='night', plt_name='matriz_confusion_night_exp6c.png', net=PARAMETERS.test_net, gd='gd_silhouette_net0')
 
-    accuracy_night=(cont_correct/cont)*100
-    print('La precisión en condiciones de noche es: ',accuracy_night)
-    min_time=sum_time//60
-    sec_time=sum_time%60
-    print("Tiempo de ejecución para test de noche: ", min_time,"min ", sec_time, "s")
-
-
+    accuracy_night = (cont_correct/cont)*100
+    print('La precisión en condiciones de noche es: ', accuracy_night)
+    min_time = sum_time//60
+    sec_time = sum_time % 60
+    print("Tiempo de ejecución para test de noche: ", min_time, "min ", sec_time, "s")
 
     print('TESTEO PARA SOLEADO')
 
-    #Llamamos a la clase GeneracionDatasetSunny para generar un dataset con las imágenes destinadas al testeo de la red
-    #en condiciones soleadas
+    # Llamamos a la clase GeneracionDatasetSunny para generar un dataset con las imágenes destinadas al testeo de la red
+    # en condiciones soleadas
     test_dataset_sunny = GeneracionDatasetSunny(imageFolderDataset=folder_dataset_test_sunny,
-                                            transform=transforms.Compose([transforms.Resize((128, 512)),
-                                                                          transforms.ToTensor()
-                                                                          ])
-                                            , should_invert=False)
+                                                transform=transforms.Compose([transforms.Resize((128, 512)),
+                                                                              transforms.ToTensor()
+                                                                              ]),
+                                                should_invert=False)
 
-    #Cargamos los lotes de imágenes a la cpu
-    test_dataloader_sunny = DataLoader(test_dataset_sunny, num_workers=PARAMETERS.workers_test, batch_size=PARAMETERS.test_batch_size, shuffle=PARAMETERS.shuffle_test)
+    # Cargamos los lotes de imágenes a la cpu
+    test_dataloader_sunny = DataLoader(test_dataset_sunny, num_workers=PARAMETERS.workers_test,
+                                       batch_size=PARAMETERS.test_batch_size, shuffle=PARAMETERS.shuffle_test)
 
     cont = 0
     cont_correct = 0
@@ -471,8 +458,6 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
         img_test, img_comp, indice = data_sunny
         img_test, img_comp, indice = img_test.to(device), img_comp.to(device), indice.to(device)
 
-
-
         # Llamamos a la red dos veces,una para cada imagen (imagen de test, imagen representativa)
         output1 = net(img_test)
         output2 = net(img_comp)
@@ -487,7 +472,7 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
         hab_real.append(indice[0].cpu().numpy())
         hab_pred.append(room_predicted.cpu().numpy())
 
-        #Si la habitación real coincide con la habitación predicha, se considera un acierto de la red
+        # Si la habitación real coincide con la habitación predicha, se considera un acierto de la red
         if room_predicted == indice[0]:
             cont_correct = cont_correct + 1
         # else:
@@ -507,7 +492,6 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
         if time_idx > 0:
             sum_time = time_execution + sum_time
 
-
     cm = confusion_matrix(hab_real, hab_pred)
     with open("matriz_confusion_sunny_exp6c", "wb") as fp:
         pickle.dump(cm, fp)
@@ -515,10 +499,10 @@ with open( base_dir + PARAMETERS.test_csv_dir, 'w', newline='') as file:
     matriz_sunny = pickle.load(file)
     print("MATRIZ DE CONFUSIÓN TEST SOLEADO")
     print(matriz_sunny)
-    display_confusion_matrix(cm=cm, illumination='sunny',plt_name='matriz_confusion_sunny_exp6c.png', net=PARAMETERS.test_net, gd='gd_silhouette_net0')
-    accuracy_sunny=(cont_correct/cont)*100
+    display_confusion_matrix(cm=cm, illumination='sunny', plt_name='matriz_confusion_sunny_exp6c.png', net=PARAMETERS.test_net, gd='gd_silhouette_net0')
+    accuracy_sunny = (cont_correct/cont)*100
     print('La precisión para soleado es: ', accuracy_sunny)
-    min_time=sum_time//60
-    sec_time=sum_time%60
-    print("Tiempo de ejecución para test de soleado: ", min_time,"min ", sec_time, "s")
-    writer.writerow([accuracy_cloudy,accuracy_night,accuracy_sunny])
+    min_time = sum_time//60
+    sec_time = sum_time % 60
+    print("Tiempo de ejecución para test de soleado: ", min_time, "min ", sec_time, "s")
+    writer.writerow([accuracy_cloudy, accuracy_night, accuracy_sunny])
