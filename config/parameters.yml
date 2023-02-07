@@ -3,18 +3,18 @@
 base_dir: '/home/arvc/Escritorio/Marcos/'
 
 rutas_imgs:
-  training_dir: 'Entrenamiento_Completo'
-  validation_dir: 'Validacion_Completa'
+  training_dir: 'Entrenamiento'
+  validation_dir: 'Validacion'
   centro_geom_dir: 'ImgsCentroGeometricoDatasetCompleto'
   test_cloudy_dir: '/TestCloudy'
   test_sunny_dir: '/TestSunny'
   test_night_dir: '/TestNight'
 
 rutas_csv:
-  train_csv_dir: 'ListaEntrenamientoSiamesas_Completa.csv'
-  val_csv_dir: 'ListaValidacion_Completa.csv'
-  data_csv_dir: '/DatosExperimento9.csv'
-  test_csv_dir: '/ResultadosExperimento9.csv'
+  train_csv_dir: 'ListaEntrenamientoSiamesas2.csv'
+  val_csv_dir: 'ListaValidacion.csv'
+  data_csv_dir: '/DatosExperimento1snn.csv'
+  test_csv_dir: '/ResultadosExperimento1snn.csv'
   test:
     cloudy_csv_dir: '/TestNublado.csv'
     sunny_csv_dir: '/TestSoleado.csv'
@@ -30,7 +30,7 @@ train_number_epochs: 5   #número de épocas a realizar para el entrenamiento de
 do_dataparallel: True
 
 shuffle_data:              #si shuffle==True, carga los lotes de forma aleatoria,  si shuffle=False, carga los lotes en orden
-  shuffle_train: True
+  shuffle_train: False
   shuffle_val: False
   shuffle_test: False
 
@@ -41,11 +41,11 @@ num_workers:               #en el PC habitual da error si vale 16 -> hay que pon
 
 frequency:                #estos parámetros indican cada cuántos lotes de imgs cargados
   show_loss: 100            #se muestra el valor de la función de pérdida
-  do_validation: 200        #se realiza la validación de la red
+  do_validation: 100        #se realiza la validación de la red
 
 names:
-  train_net: 'net_exp9'   #este parámetro indica el nombre con el que queremos que se guarde la red
-  test_net: 'net_exp9' #este parámetro indica el nombre de la red cargada en el test
+  train_net: 'net_exp1snn'   #este parámetro indica el nombre con el que queremos que se guarde la red
+  test_net: 'net_exp1snn' #este parámetro indica el nombre de la red cargada en el test
 
 probabilities:
   hard_pos: 0.15   #este parámetro indica la proporción de imágenes hard positive respecto del total de imágenes positive pasadas a la red durante el entrenamiento
@@ -53,7 +53,7 @@ probabilities:
 
 same_room: 0.05
 
-num_iteraciones: 1000
+num_iteraciones: 100000
 
-min_val_accuracy: 98
-accuracy_end_train: 99.75
+min_val_accuracy: 96
+accuracy_end_train: 100

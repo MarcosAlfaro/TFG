@@ -39,7 +39,7 @@ probabilities = n_images / suma
 with open(base_dir + PARAMETERS.train_csv_dir, 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(
-        ["Img0", "Img1", "Indice"])
+        ["Img0", "Img1", "Label"])
 
     for lote in range(0, PARAMETERS.num_iteraciones):
 
@@ -55,9 +55,9 @@ with open(base_dir + PARAMETERS.train_csv_dir, 'w', newline='') as file:
 
         select_same_room = np.arange(0, 2)
         same_room_choice = np.random.choice(select_same_room, 1,
-                                            p=[1.0 - PARAMETERS.same_room, PARAMETERS.same_room])  # 0:different room, 1:same room
+                                            p=[1.0 - PARAMETERS.same_room, PARAMETERS.same_room])  # 0:same room, 1:different room
 
-        if same_room_choice == 1:
+        if same_room_choice == 0:
             room_img1 = (os.path.join(rutas_habitacion[room_img0_choice[0]]))
             list_imgs1 = list_imgs_img0
 
