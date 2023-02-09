@@ -343,11 +343,10 @@ class ContrastiveLoss(torch.nn.Module):
         self.margin = margin
 
     def forward(self, output1, output2, label):
-        euclidean_distance = F.pairwise_distance(output1, output2, keepdim = True)
-        #aqui
-        loss_contrastive = torch.mean((1-label) * torch.pow(euclidean_distance, 2) +
-                                      (label) * torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
 
+        euclidean_distance = F.pairwise_distance(output1, output2, keepdim=True)
+        loss_contrastive = torch.mean((1-label) * torch.pow(euclidean_distance, 2) +
+                                      label * torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
 
         return loss_contrastive
 
@@ -411,15 +410,15 @@ with open(PARAMETERS.base_dir + PARAMETERS.data_csv_dir, 'w', newline='') as fil
             time_idx += 1
             start_train = time.time()
             # Asignamos las imágenes cargadas en cada lote a variables con las que trabajaremos
-            img0, img1, indice = data
+            img0, img1, label = data
             # anc, pos, neg, label_pos, label_neg = anc.to(device), pos.to(device), neg.to(device), label_pos, label_neg
-
+            label = label.to(device)
             # Reseteamos el optimizador entre iteración e iteración
             optimizer.zero_grad()
 
             # Llamamos a la red tres veces,una para cada imagen(anchor, positive,negative)
-            output1 = net(anc)
-            output2 = net(pos)
+            output1 = net(img0)
+            output2 = net(img1)
 
             accuracy_loss = 100
             # Llamamos a la función de pérdida para que actualice los pesos internos de la red según el error que haya cometido

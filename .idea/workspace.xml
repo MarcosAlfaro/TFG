@@ -4,39 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87d66089-3f67-40d9-b4fd-c1700a576c72" name="Changes" comment="Cambios 02/02/23">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/TFG.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TFG.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="87d66089-3f67-40d9-b4fd-c1700a576c72" name="Changes" comment="Cambios 07/02/23">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodigosAuxiliares/hard_easy.py" beforeDir="false" afterPath="$PROJECT_DIR$/CodigosAuxiliares/hard_easy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodigosAuxiliares/img_representativas.py" beforeDir="false" afterPath="$PROJECT_DIR$/CodigosAuxiliares/img_representativas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodigosAuxiliares/mapa_trayectoria.py" beforeDir="false" afterPath="$PROJECT_DIR$/CodigosAuxiliares/mapa_trayectoria.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_10.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_10.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_3.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_4.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_4.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_5.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_6.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_6.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_7.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_8.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_8.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entrenamientos/entrenamiento_9.py" beforeDir="false" afterPath="$PROJECT_DIR$/Entrenamientos/entrenamiento_9.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs_siamesas.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs_siamesas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs_train_hard_easy_v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs_train_hard_easy_v2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs_v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs_v2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs_val.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeneracionDatasets/gen_imgs_val.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneracionDatasets/generacionimagenes_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeneracionDatasets/generacionimagenes_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeneracionDatasets/generacionimagenes_val.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeneracionDatasets/generacionimagenes_val.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/parameters.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/parameters.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675342846667</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Cambios 07/02/23">
+      <created>1675775871645</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1675775871645</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -239,7 +216,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Cambios 02/02/23" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cambios 02/02/23" />
+    <MESSAGE value="Cambios 07/02/23" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cambios 07/02/23" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
